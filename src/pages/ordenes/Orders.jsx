@@ -52,9 +52,12 @@ export default function Orders() {
 
             <TableRow>
               <TableCell>Nro orden</TableCell>
+              <TableCell>Fecha</TableCell>
               <TableCell>Estado</TableCell>
               <TableCell >Nombre</TableCell>
+              <TableCell >Pago</TableCell>
               <TableCell >Total a pagar</TableCell>
+              <TableCell >Tipo</TableCell>
               <TableCell >Detalle</TableCell>
             </TableRow>
           </TableHead>
@@ -68,18 +71,24 @@ export default function Orders() {
                 <TableCell component="th" scope="row">
                   {row.nroOrder}
                 </TableCell >
-
+                <TableCell component="th" scope="row">
+                  {row.dateOrder}
+                </TableCell >
                 <TableCell component="th" scope="row" >                 
                   <ChooseState status={row.status}id={row.id} chooseTo={["Completada","Cancelada"]}/>
                 </TableCell>
 
                 <TableCell component="th" scope="row" >{row.name}</TableCell>
+                <TableCell component="th" scope="row" >{row.collection}</TableCell>
                 <TableCell component="th" scope="row" >ARS ${row.total}</TableCell>
-
+                <TableCell component="th" scope="row" >{row.site}</TableCell>
                 <TableCell component="th" scope="row" >
-                  <Chip
+                
+                   <Chip
                     onClick={() => handleClick(row.id)}
-                    clickable label={row.table.name} color="default" variant="outlined" />
+                    clickable label={"detalle"}                    
+                    
+                    color="default" variant="outlined" /> 
                 </TableCell>
               </TableRow>
             ))}

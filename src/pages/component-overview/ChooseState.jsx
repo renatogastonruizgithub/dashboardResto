@@ -11,7 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { patchOrder, fetchOrder } from "../../store/orderSlice"
+import { patchOrder, fetchOrder, fetchKitchen ,fetchCustomer,fetchWaiter} from "../../store/orderSlice"
 
 
 const style = {
@@ -56,6 +56,9 @@ export default function ChooseState({ status, id, chooseTo }) {
     try {
       await dispatch(patchOrder({ id, datosActualizados })).unwrap();
       dispatch(fetchOrder());
+      dispatch(fetchKitchen());
+      dispatch(fetchCustomer());
+
 
       setOpen(false)
     } catch (error) {

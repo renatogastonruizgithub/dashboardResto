@@ -17,28 +17,14 @@ const pedidos = {
   children: [
     {
       id: 'get-pedidos',
-      title: 'Pedidos',
+      title: 'Historial',
       type: 'item',
       url: '/Ordenes',
       icon: icons.LoginOutlined,
      
     },
-   {
-      id: 'cocina',
-      title: 'Cocina',
-      type: 'item',
-      url: '/cocina',
-      icon: icons.LoginOutlined,
-     
-    }, 
-    /* {
-      id: 'delete-order',
-      title: 'Eliminar el pedido',
-      type: 'item',
-      url: '/delete-order',
-      icon: icons.ProfileOutlined,
-    
-    } */
+ 
+  
   ]
 };
 

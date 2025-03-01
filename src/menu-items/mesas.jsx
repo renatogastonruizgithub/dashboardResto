@@ -11,21 +11,35 @@ const icons = {
 
 const mesas = {
   id: 'Mesas',
-  title: 'Gestion de mesas',
+  title: 'Mozo',
   type: 'group',
   children: [
     {
       id: '1',
-      title: 'ver mesas',
+      title: 'Mesas disponibles',
       type: 'item',
       url: '/tablets',
       icon: icons.ChromeOutlined
     },
     {
       id: '2',
-      title: 'Crear una mesa',
+      title: 'Entregar',
       type: 'item',
-      url: '/create',
+      url: '/mozos',
+      icon: icons.ChromeOutlined
+    },
+    {
+      id: '3',
+      title: 'Cuenta',
+      type: 'item',
+      url: '/mesaAcobrar',
+      icon: icons.ChromeOutlined
+    },
+    {
+      id: '4',
+      title: 'Pedido para llevar',
+      type: 'item',
+      url: '/llevar',
       icon: icons.ChromeOutlined
     },
     /* {

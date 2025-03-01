@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTables, } from "../../store/tablesSlice";
-import { getOneOrder, } from "../../store/orderSlice";
+
 import { useNavigate } from "react-router-dom";
 
 
@@ -19,10 +19,7 @@ export default function Tablets() {
    
   }, [dispatch]);
 
-  const handleClick = (id) => {  
- navigate(`/ticket/${id}`);   
-  }
-
+ 
   const handleOrder = (id) => {  
     navigate(`/createOrder/${id}`);   
      }
@@ -33,13 +30,13 @@ export default function Tablets() {
   return (
     <>
       <Typography variant="h3">Mesas disponibles</Typography>
-      <Grid container spacing={2} padding={2}>
+     <Grid container spacing={2} padding={2}>
         {tables.map((table) => (
           <Grid item xs={6} sm={4} md={3} lg={2} key={table.id}>
             <Card
               elevation={2}
               sx={{
-                backgroundColor: table.available === true ? "#4caf50" : "#616161",
+                backgroundColor:"#8cc78f" ,
                 color: "white",
                 textAlign: "center",
                 padding: 0,
@@ -50,8 +47,7 @@ export default function Tablets() {
                 <Typography variant="h3">{table.name}</Typography>
 
                 <Stack spacing={2}>
-                  {table.available === true ? (
-                    <>
+                
                       <Typography variant="p">Disponible</Typography>                    
                      
                         <Button
@@ -63,36 +59,14 @@ export default function Tablets() {
                           onClick={() => handleOrder(table?.id)} 
                         >
                           Crear pedido
-                        </Button>
-                    
-                    </>                    
-                  ) 
-                  : 
-                  (
-                    <>
-                      <Typography variant="p">Ocupada</Typography>
-
-                      {table.orders.map((order, index) => (
-                        <Button
-                          key={index}
-                        
-                          sx={{ marginTop: "1rem" }}
-                          variant="contained"
-                          color="primary"
-                          onClick={() => handleClick(order?.id)} 
-                        >
-                          Pedido
-                        </Button>
-                      ))}
-                    </>
-                  )}
+                        </Button>  
                 </Stack>
               </CardContent>
             </Card>
           </Grid>
         ))}
       </Grid>
-
+ 
     </>
   )
 }

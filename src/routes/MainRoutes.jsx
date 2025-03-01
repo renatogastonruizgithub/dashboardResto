@@ -10,6 +10,11 @@ import Ticket from 'pages/ordenes/Ticket';
 
 import OrderKitchen from 'pages/ordenes/OrderKitchen';
 import CreateOrder from 'pages/ordenes/CreateOrder';
+import Customers from 'pages/ordenes/Customers';
+
+import ToTable from 'pages/ordenes/ToTable';
+import Charge from 'pages/caja/Charge';
+import NotAvailable from 'pages/tablets/NotAvailable';
 
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
 
@@ -50,7 +55,27 @@ const MainRoutes = {
       element: <OrderKitchen />
     },
     {
+      path: 'clientes',  
+      element: <Customers />
+    },
+    {
+      path: 'mozos',   
+      element: <ToTable />
+    },
+    {
+      path: 'cobros',   
+      element: <Charge />
+    },
+    {
+      path: 'mesaAcobrar',   
+      element: <NotAvailable />
+    },
+    {
       path: 'createOrder/:id',  
+      element: <CreateOrder />
+    },
+    {
+      path: 'llevar',  
       element: <CreateOrder />
     }
   ]

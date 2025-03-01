@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchOrder } from '../../store/orderSlice';
+import {fetchKitchen } from '../../store/orderSlice';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -20,11 +20,12 @@ function OrderKitchen() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchOrder());
+        dispatch(fetchKitchen());
+    
     }, [dispatch]);
 
-    const { orders, loading, error } = useSelector((state) => state.orders);
-    console.log(orders)
+    const {kitchen, loading, error } = useSelector((state) => state.orders);
+    console.log(kitchen)
 
     return (
         <Container >
@@ -32,13 +33,13 @@ function OrderKitchen() {
             <Grid container spacing={4}>
 
 
-                {orders.map((row) => (
+                {kitchen.map((row) => (
                     
-                    <Grid   key={row.id} item xs={12} sm={6} md={4} lg={4}>
+                    <Grid   key={row.id} item xs={12} sm={6} md={4} lg={3}>
                         <Card key={row.id}  sx={{ minWidth: 200 }}  elevation={3}>
                             <CardContent>
                                 <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                                    En mesa
+                                    {row.site}
                                 </Typography>
                                 <Typography variant="h5" component="div">
                                     {row.nroOrder}
