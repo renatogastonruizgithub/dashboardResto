@@ -192,5 +192,5 @@ const orderSlice = createSlice({
       })
   },
 });
-export const { agregar, restar, /* setTable, setName, */ clearCart } = orderSlice.actions;
+export const { agregar, restar, clearCart } = orderSlice.actions;
 export default orderSlice.reducer;

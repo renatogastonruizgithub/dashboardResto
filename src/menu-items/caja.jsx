@@ -9,23 +9,23 @@ const icons = {
 
 const caja = {
   id: 'caja',
-  title: 'Caja',
+  title: 'Ventas',
   type: 'group',
   children: [
     {
       id: 'cobros',
-      title: 'cobros',
+      title: 'Cobros del dia',
       type: 'item',
       url: '/cobros',
       icon: icons.ChromeOutlined
     },
-/*     {
-      id: '2',
-      title: 'Cocina',
+     {
+      id: 'cobros2',
+      title: 'Cobro pendientes',
       type: 'item',
-      url: '/cocina',
+      url: '/cobros-pendientes',
       icon: icons.ChromeOutlined
-    }, */
+    }, 
    
   ]
 };

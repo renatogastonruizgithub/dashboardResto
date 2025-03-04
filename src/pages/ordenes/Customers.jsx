@@ -65,7 +65,7 @@ export default function Customers() {
             <Card sx={{ minWidth: 200 }} elevation={3}>
               <CardContent>
                 <Typography variant="h1" component="div">
-                  En mesa
+                  Entrega en mesa
                 </Typography>
                 {renderOrders(ordersInTable)}
               </CardContent>

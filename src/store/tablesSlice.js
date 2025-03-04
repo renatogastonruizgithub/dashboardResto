@@ -6,6 +6,7 @@ const API_URL = "http://localhost:3001/api/v1/table/"
 
 const TABLE="http://localhost:3001/api/v1/order/NotAvailable/"
 
+const COLLECTION="http://localhost:3001/api/v1/order/collections/"
 
 export const fetchTables = createAsyncThunk("tables/fetchTables", async () => {
   const response = await axios.get(API_URL);
@@ -19,6 +20,13 @@ export const fetchTableOrder = createAsyncThunk("tables/fetchTableOrder", async 
   return response.data; 
 });
 
+export const fetchCollections = createAsyncThunk("tables/fetchCollections", async () => {
+  const response = await axios.get(COLLECTION);
+  console.log(response.data)
+  return response.data; 
+});
+
+
 
 
 
@@ -26,6 +34,7 @@ const tablesSlice = createSlice({
   name: "tables",
   initialState: {
     tables: [],
+    collections:[],
     tableOrder:[],
     loading: false,
     error: null,
@@ -47,6 +56,10 @@ const tablesSlice = createSlice({
       .addCase(fetchTableOrder.fulfilled, (state, action) => {
         state.loading = false;
         state.tableOrder = action.payload;
+      })
+      .addCase(fetchCollections.fulfilled, (state, action) => {
+        state.loading = false;
+        state.collections = action.payload;
       })
   },
 });

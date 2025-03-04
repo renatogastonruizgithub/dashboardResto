@@ -11,8 +11,9 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { patchOrder, fetchOrder, fetchKitchen ,fetchCustomer,fetchWaiter} from "../../store/orderSlice"
+import { patchOrder, fetchOrder, fetchKitchen ,fetchCustomer,getOneOrder} from "../../store/orderSlice"
 
+import {fetchCollections} from "../../store/tablesSlice"
 
 const style = {
   position: 'absolute',
@@ -58,6 +59,7 @@ export default function ChooseState({ status, id, chooseTo }) {
       dispatch(fetchOrder());
       dispatch(fetchKitchen());
       dispatch(fetchCustomer());
+      dispatch(getOneOrder(id));
 
 
       setOpen(false)

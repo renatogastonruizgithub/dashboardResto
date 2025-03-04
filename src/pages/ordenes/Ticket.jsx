@@ -3,7 +3,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom"
 import { getOneOrder } from '../../store/orderSlice';
-import { Box ,Typography} from '@mui/material';
+import { Box ,Stack,Typography} from '@mui/material';
+import ChooseState from 'pages/component-overview/ChooseState';
 
 
 export default function Ticket() {
@@ -24,7 +25,7 @@ export default function Ticket() {
   if (!oneOrder) return <p>No se encontró la orden</p>;
 
 
-
+console.log(oneOrder)
 
 
   return (
@@ -36,8 +37,10 @@ export default function Ticket() {
           <p>Cliente: {oneOrder.name}</p>
           <p>Nro de pedido: {oneOrder.nroOrder}</p>
           <p>Total a pagar: ${oneOrder.total}</p>
-          <p>Pago: {oneOrder.status}</p>
-
+          <p>Pago: {oneOrder.collection}</p>
+        
+          <p>Enviar a caja:</p>
+          <ChooseState status={oneOrder.status} id={oneOrder.id} chooseTo={["Cobrar"]}> </ChooseState>
           <h3>Productos en la Orden:</h3>
           <ul>
             {oneOrder.items.map((item, index) => (

@@ -2,9 +2,10 @@ import React from 'react'
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProduct, } from '../../store/productSlice';
+import { fetchProduct,fetchCategori } from '../../store/productSlice';
 import { Grid, Card, CardContent, Typography, Stack, TextField, Container, Button } from '@mui/material'
 import { agregar, restar,  clearCart,  sendOrder } from '../../store/orderSlice';
+import Category from 'pages/component-overview/Category';
 
 
 function CreateOrder() {
@@ -17,22 +18,22 @@ function CreateOrder() {
   useEffect(() => {
     dispatch(clearCart());
     dispatch(fetchProduct());
-    /* dispatch(setTable(id)); */
+    dispatch(fetchCategori());
 
-    if(!id){
+   if(!id){
       setCarry("Para llevar")
-    }
+    } 
 
   }, [dispatch]);
 
-  const { products, loading, error } = useSelector((state) => state.products);
+  const { products,categories, loading, error } = useSelector((state) => state.products);
 
   const { items } = useSelector((state) => state.orders);
 
 
+console.log(products)
 
-
-  const handleOrder = () => {
+   const handleOrder = () => {
     if (!customerName) {
       alert("Debes ingresar tu nombre");
       return;
@@ -47,8 +48,10 @@ function CreateOrder() {
         productIds: items,
       }
       console.log(orderData)
-     dispatch(sendOrder(orderData))  
-    }
+     dispatch(sendOrder(orderData)) 
+     dispatch(clearCart())
+     setCustomerName("")   
+    } 
 
     return (
       <Container>
@@ -66,15 +69,15 @@ function CreateOrder() {
             color="success"
 
             sx={{ marginTop: "1rem" }}
-            onClick={handleOrder}
+           onClick={handleOrder} 
             disabled={loading}
           >
             {loading ? "Enviando..." : "Enviar Pedido"}
           </Button>
         </Stack>
 
-
-
+          <Category category={products}></Category>  
+{/* 
         <Grid container spacing={2}>
 
           {products.map((product, i) => (
@@ -118,7 +121,7 @@ function CreateOrder() {
               </Card>
             </Grid>
           ))}
-        </Grid>
+        </Grid> */}
 
       </Container>
     )
