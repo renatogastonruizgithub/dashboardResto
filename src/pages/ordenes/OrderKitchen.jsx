@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect } from "react";
+import { useEffect,useRef  } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {fetchKitchen } from '../../store/orderSlice';
 import Card from '@mui/material/Card';
@@ -7,29 +7,35 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-
+import { ToastContainer} from "react-toastify"; 
 import Grid from '@mui/material/Grid';
 import ChooseState from 'pages/component-overview/ChooseState';
 
+import io from 'socket.io-client';
 
+const socket = io('http://localhost:3001'); // URL del backend NestJS
+
+import { useSocket } from 'context/SocketContext';
 
 
 
 function OrderKitchen() {
-
-    const dispatch = useDispatch();
+    const socket = useSocket(); 
+     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(fetchKitchen());
+     
+      dispatch(fetchKitchen());
+
     
-    }, [dispatch]);
+    }, [socket]);
 
     const {kitchen, loading, error } = useSelector((state) => state.orders);
     console.log(kitchen)
 
     return (
         <Container >
-
+               <ToastContainer />
             <Grid container spacing={4}>
 
 

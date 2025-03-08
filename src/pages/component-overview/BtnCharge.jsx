@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { patchOrder } from "../../store/orderSlice"
+import { fetchPendingCharges, patchOrder } from "../../store/orderSlice"
 import { Button } from '@mui/material'
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCollections } from 'store/tablesSlice';
@@ -30,6 +30,7 @@ export default function BtnCharge({ idO, table }) {
         try {
             await  dispatch(patchOrder({ id: idO, datosActualizados })).unwrap();
             dispatch(fetchCollections())
+            dispatch(fetchPendingCharges())
         } catch (error) {
             console.error("Error actualizando el estado:", error);
         } 

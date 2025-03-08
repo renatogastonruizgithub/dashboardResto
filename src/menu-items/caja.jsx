@@ -19,13 +19,7 @@ const caja = {
       url: '/cobros',
       icon: icons.ChromeOutlined
     },
-     {
-      id: 'cobros2',
-      title: 'Cobro pendientes',
-      type: 'item',
-      url: '/cobros-pendientes',
-      icon: icons.ChromeOutlined
-    }, 
+    
    
   ]
 };

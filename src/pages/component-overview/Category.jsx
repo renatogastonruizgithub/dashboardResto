@@ -23,8 +23,8 @@ function BasicModal({ open, handleClose, categoryID }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        /* if (categoryID) {  } */
-            dispatch(fetchCategori(categoryID));
+        if (categoryID) {  dispatch(fetchCategori(categoryID)) } 
+           
       
     }, [dispatch, categoryID]);
 
@@ -79,7 +79,7 @@ function BasicModal({ open, handleClose, categoryID }) {
                                             </Typography>
                                             <button
                                                 style={{ cursor: "pointer" }}
-                                                onClick={() => dispatch(agregar({ productId: product.id }))}>+</button> 
+                                                onClick={() => dispatch(agregar({ productId: product.id ,name:product.name}))}>+</button> 
                                         </Stack>
                                     </CardContent>
                                

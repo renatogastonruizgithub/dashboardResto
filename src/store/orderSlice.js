@@ -29,6 +29,11 @@ export const fetchWaiter = createAsyncThunk("order/fetchWaiter", async () => {
   return response.data; 
 })
 
+export const fetchPendingCharges = createAsyncThunk("order/fetchPendingCharges", async () => {
+  const response = await axios.get("http://localhost:3001/api/v1/order/pendingCharges");
+
+  return response.data; 
+})
 
 
 export const getOneOrder = createAsyncThunk("order/getOneOrder", async (id) => {
@@ -81,18 +86,20 @@ const orderSlice = createSlice({
     kitchen:[],
     customer:[],
     waiter:[],
-    error: null,    
+    pendingCharges:[],
+    error: null,
+    name:"",    
     items: [], // [{ productId, quantity }]
   },
   reducers: {
     agregar: (state, action) => {
-      const { productId } = action.payload;
+      const { productId,name } = action.payload;
       
       const existingProduct = state.items.find((item) => item.productId === productId);
       if (existingProduct) {
         existingProduct.quantity++;
       } else {
-        state.items.push({ productId, quantity: 1 });
+        state.items.push({ productId,name, quantity: 1 });
       }
     },
     restar: (state, action) => {
@@ -106,12 +113,10 @@ const orderSlice = createSlice({
         }
       }
     },
-   /*  setTable: (state, action) => {
-      state.table = action.payload;
-    },
+  
     setName: (state, action) => {
       state.name = action.payload;
-    }, */
+    }, 
     clearCart: (state) => {
       state.items = [];
     },
@@ -190,7 +195,11 @@ const orderSlice = createSlice({
         state.loading = false;
         state.waiter = action.payload
       })
+      .addCase(fetchPendingCharges.fulfilled, (state,action) => {
+        state.loading = false;
+        state.pendingCharges = action.payload
+      })
   },
 });
-export const { agregar, restar, clearCart } = orderSlice.actions;
+export const { agregar, restar, clearCart ,setName} = orderSlice.actions;
 export default orderSlice.reducer;
