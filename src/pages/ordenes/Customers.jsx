@@ -1,38 +1,28 @@
 import React from 'react'
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchCustomer } from '../../store/orderSlice';
 import Card from '@mui/material/Card';
-
 import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-
 import Grid from '@mui/material/Grid';
-
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import useOrderStore from 'store/orderStore';
 
 
 export default function Customers() {
-
-
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(fetchCustomer());
+    fetchCustomer()
 
-  }, [dispatch]);
+  }, []);
 
-  const { customer, loading, error } = useSelector((state) => state.orders);
+  const { customer, fetchCustomer, error } = useOrderStore();
  
-  const ordersInProcess = customer.filter(order => order.status === "En proceso");
-  const ordersInTable = customer.filter(order => order.site === "En mesa" && order.status==="Para retirar" )
+  const ordersInProcess = customer.filter(order => order.status.name === "en proceso"|| order.status.name==="en proceso para llevar");
+  const ordersInTable = customer.filter(order => order.site === "En mesa" && order.status.name==="llevar a mesa" )
 
-  const ordersTakeOut  = customer.filter(order => order.site === "Para llevar"&& order.status==="Para retirar" );
+  const ordersTakeOut  = customer.filter(order => order.site === "Para llevar"&& order.status.name==="para retirar" );
 
 
   const renderOrders = (orders) => (

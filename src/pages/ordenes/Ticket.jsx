@@ -1,31 +1,27 @@
 import React from 'react'
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom"
-import { getOneOrder } from '../../store/orderSlice';
-import { Box ,Stack,Typography} from '@mui/material';
+import { Box ,Typography} from '@mui/material';
 import ChooseState from 'pages/component-overview/ChooseState';
+import useOrderStore from 'store/orderStore';
 
 
 export default function Ticket() {
   const { id } = useParams();
-  const dispatch = useDispatch();
+
    // Asegurarse de que el estado tenga `oneOrder` y `loading`
-   const { oneOrder, loading, error } = useSelector((state) => state.orders); 
+   const { oneOrder, loading, error ,getOneOrder} = useOrderStore(); 
 
    useEffect(() => {
     if (id) {
-      dispatch(getOneOrder(id)); 
+  getOneOrder(id) 
     }
-  }, [dispatch, id]);
+  }, [id]);
 
   // Manejo de estados de carga y error
   if (loading) return <p>Cargando...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!oneOrder) return <p>No se encontró la orden</p>;
-
-
-console.log(oneOrder)
 
 
   return (
@@ -40,7 +36,7 @@ console.log(oneOrder)
           <p>Pago: {oneOrder.collection}</p>
         
           <p>Enviar a caja:</p>
-          <ChooseState status={oneOrder.status} id={oneOrder.id} chooseTo={["Cobrar"]}> </ChooseState>
+          <ChooseState statusGet={oneOrder.status.name} id={oneOrder.id} chooseTo={["Cobrar"]}> </ChooseState>
           <h3>Productos en la Orden:</h3>
           <ul>
             {oneOrder.items.map((item, index) => (

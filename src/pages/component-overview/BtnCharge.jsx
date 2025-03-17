@@ -1,36 +1,34 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { fetchPendingCharges, patchOrder } from "../../store/orderSlice"
 import { Button } from '@mui/material'
-import { useDispatch, useSelector } from "react-redux";
-import { fetchCollections } from 'store/tablesSlice';
+import useTableStore from "../../store/tableStore";
+import useOrderStore from "../../store/orderStore";
 
 
-
-
-
-
-export default function BtnCharge({ idO, table }) {
-  const dispatch = useDispatch()
-    const [collection, setCollection] = useState("Completado")
+export default function BtnCharge({ idO, table ,site}) {
+    
+    const [collection, setCollection] = useState("pagado")
    
 
     const { id = null } = table || {};
 
+    const { fetchCollections, error } = useTableStore();
 
+    const {patchOrder } = useOrderStore();
 
     const datosActualizados = {
         table: id,
-        collection: collection
+        collection: collection,
+        site:site
     }
      
      const submitCharge = async () => {
-    
+      
           
         try {
-            await  dispatch(patchOrder({ id: idO, datosActualizados })).unwrap();
-            dispatch(fetchCollections())
-            dispatch(fetchPendingCharges())
+            await patchOrder( idO, datosActualizados,"cobrado" )
+            await fetchCollections()
+         
         } catch (error) {
             console.error("Error actualizando el estado:", error);
         } 
@@ -38,6 +36,7 @@ export default function BtnCharge({ idO, table }) {
 
     return (
         <>
+     
             <Button variant="contained" onClick={()=>submitCharge()}>Cobrar</Button>
 
         </>

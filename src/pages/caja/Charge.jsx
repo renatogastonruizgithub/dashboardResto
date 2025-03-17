@@ -10,14 +10,9 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import GiftOutlined from '@ant-design/icons/GiftOutlined';
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchCollections } from '../../store/tablesSlice';
-import { useNavigate } from "react-router-dom";
-import Switch from '@mui/material/Switch';
 import BtnCharge from 'pages/component-overview/BtnCharge';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import { fetchPendingCharges } from '../../store/orderSlice';
+import useTableStore from "../../store/tableStore";
+import { ToastContainer } from 'react-toastify';
 const avatarSX = {
   width: 36,
   height: 36,
@@ -35,45 +30,17 @@ const actionSX = {
 };
 export default function Charge() {
 
-  const [check, setCheck] = useState(false)
 
+  useEffect(() => {   
+     fetchCollections()
+   
+  }, []);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const savedCheck = localStorage.getItem("setCheck");
-    if (savedCheck !== null) {
-      setCheck(savedCheck === "true"); // Convertir a booleano
-    }
-    if (check) {
-      dispatch(fetchPendingCharges());
-    }
-    else {
-      dispatch(fetchCollections());
-    }
-  }, [dispatch, check]);
-
-  const { collections, loading, } = useSelector((state) => state.tables);
-
-  const { pendingCharges } = useSelector((state) => state.orders);
-
-  const data = check ? pendingCharges : collections;
-
-  const handleChange = (e) => {
-    const newValue = e.target.checked;
-    setCheck(newValue);
-    localStorage.setItem("setCheck", newValue.toString()); 
-  };
-
+  const {collections, fetchCollections, loading, tableOrder } = useTableStore();
 
   return (
     <div>
-      <FormGroup>
-        
-        <FormControlLabel control={<Switch checked={check} onChange={handleChange} />} label="Cobros pendinetes" />
-
-      </FormGroup>
-
+        <ToastContainer></ToastContainer>
       <List
         component="nav"
         sx={{
@@ -88,7 +55,7 @@ export default function Charge() {
       >
       
         {
-          data.map((row) => {
+          collections.map((row) => {
             return (
               <ListItemButton divider key={row.id}>
                 <ListItemAvatar>
@@ -112,7 +79,7 @@ export default function Charge() {
                     <Typography marginRight="1rem" variant="h6" color="secondary" noWrap>
                       {row.dateOrder}
                     </Typography>
-                    <BtnCharge idO={row.id} table={row.table} />
+                    <BtnCharge idO={row.id} table={row.table} site={row.site}/>
                   </Stack>
                 </ListItemSecondaryAction>
               </ListItemButton>

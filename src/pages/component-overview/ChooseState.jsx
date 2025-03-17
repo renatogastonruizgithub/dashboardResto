@@ -10,10 +10,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { patchOrder, fetchOrder, fetchKitchen ,fetchCustomer,getOneOrder} from "../../store/orderSlice"
-
-import {fetchCollections} from "../../store/tablesSlice"
+import UsestatusStore from '../../store/statusStore';
+import useOrderStore from 'store/orderStore';
 
 const style = {
   position: 'absolute',
@@ -26,18 +24,25 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-export default function ChooseState({ status, id, chooseTo }) {
-
+export default function ChooseState({ statusGet, id, }) {
   const [estado, setEstado] = React.useState('');
   const [open, setOpen] = React.useState(false)
   const [ID, setId] = React.useState("")
 
-  const dispatch = useDispatch()
+  const{status,loading,error,fetchStatus,updateStatus}= UsestatusStore()
+
+  const{fetchOrder,fetchKitchen,fetchCustomer,fetchWaiter,getOneOrder}=useOrderStore()
 
 
 
-  const { loading, error } = useSelector((state) => state.orders);
+  useEffect(() => {
+    
+    fetchStatus();
+  }, []);
 
+  
+  const statusArray = Array.isArray(status) ? status : [status];
+  console.log(error)
   const handleOpen = (id) => {
     setOpen(true)
     setId(id)
@@ -46,55 +51,56 @@ export default function ChooseState({ status, id, chooseTo }) {
 
   const handleChange = (event) => {
     setEstado(event.target.value)
+   
   }
 
-  const datosActualizados = {
-    status: estado
-  }
 
   const submitChoosed = async () => {
+   
 
-    try {
-      await dispatch(patchOrder({ id, datosActualizados })).unwrap();
-      dispatch(fetchOrder());
-      dispatch(fetchKitchen());
-      dispatch(fetchCustomer());
-      dispatch(getOneOrder(id));
-
+   try {
+     
+    await updateStatus( id, estado )
+    await fetchOrder() 
+    await fetchKitchen()      
+    await fetchCustomer()
+    await fetchWaiter()
+    await getOneOrder(id)
+      await fetchStatus();
 
       setOpen(false)
     } catch (error) {
       console.error("Error actualizando el estado:", error);
-    }
+    }  
   }
 
   let color;
   let title;
-  switch (status) {
-    case "Cancelada":
+  switch (statusGet) {
+    case "cancelada":
       color = "error";
-      title = "Cancelada";
+      title = "cancelada";
       break;
-    case "Para retirar":
+    case "para retirar":
       color = "success";
-      title = "Para retirar";
+      title = "para retirar";
       break;
-    case "En proceso":
+    case "en proceso":
       color = "warning";
-      title = "En proceso";
+      title = "en proceso";
       break;
-    case "Completada":
+    case "completada":
       color = "primary";
-      title = "Completada";
+      title = "completada";
       break;
     default:
       color = "default";
-      title = "Pendiente";
+      title = "pendiente";
   }
  
   return (
     < >
-      <Chip clickable label={status} color={color} variant="outlined"
+      <Chip clickable label={statusGet} color={color} variant="outlined"
         onClick={() => handleOpen(id)}
       />
 
@@ -119,8 +125,8 @@ export default function ChooseState({ status, id, chooseTo }) {
               onChange={handleChange}
             >
               {
-                chooseTo.map((state,y) => {
-                  return <MenuItem key={y} value={state}>{state}</MenuItem>
+                statusArray.map((state,y) => {
+                  return <MenuItem key={y} value={state.id}>{state.name}</MenuItem>
                   
                 })
               }

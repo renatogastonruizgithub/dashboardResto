@@ -1,12 +1,11 @@
 import React from 'react'
 import { Grid, Card, CardContent, Typography, Stack, CardMedia, Container, CardActionArea } from '@mui/material'
-import Box from '@mui/material/Box';
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchCategori } from '../../store/productSlice';
-import Modal from '@mui/material/Modal';
-import { agregar, restar,  clearCart,  sendOrder } from '../../store/orderSlice';
 
+import { useEffect } from "react";
+
+import Modal from '@mui/material/Modal';
+import useOrderStore from "../../store/orderStore";
+import useProductStore from '../../store/productStore';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -20,19 +19,18 @@ const style = {
 };
 
 function BasicModal({ open, handleClose, categoryID }) {
-    const dispatch = useDispatch();
+    const { products,fetchProduct } = useProductStore();
+    const { items ,restar,agregar} = useOrderStore();
 
     useEffect(() => {
-        if (categoryID) {  dispatch(fetchCategori(categoryID)) } 
+        if (categoryID) {  fetchProduct(categoryID) } 
            
-      
-    }, [dispatch, categoryID]);
+        // Validación adicional para evitar errores
+ 
+    }, [categoryID]);
 
-    const { categories, loading, error } = useSelector((state) => state.products);
-
-    const { items } = useSelector((state) => state.orders);
-    const category = categories && categories.products ? categories : null;
-
+    const product = products && products.products ? products : null;
+    const validItems = items || [];
     return (
         <Modal
             open={open}
@@ -43,7 +41,7 @@ function BasicModal({ open, handleClose, categoryID }) {
             <Container sx={style}>
                 <Grid container spacing={2}>
 
-                    {category?.products?.map((product, i) => (
+                    {product?.products?.map((product, i) => (
                         <Grid key={i} item xs={12} sm={6} md={4} lg={3} >
                             <Card
                                 key={product.id}
@@ -70,16 +68,20 @@ function BasicModal({ open, handleClose, categoryID }) {
                                         >
                                            <button
                                                 style={{ cursor: "pointer" }}
-                                                onClick={() => dispatch(restar({ productId: product.id }))}
+                                                onClick={() =>restar(product.id )}
                                             >
                                                 -
                                             </button>
                                             <Typography variant="h3">
-                                                {items.find((item) => item.productId === product.id)?.quantity || 0}
+                                            {
+                                                items.length > 0 ?
+                                                 (items.find((item) => item.productId === product.id)?.quantity || 0)
+                                                 :(0)
+                                            }                                       
                                             </Typography>
                                             <button
                                                 style={{ cursor: "pointer" }}
-                                                onClick={() => dispatch(agregar({ productId: product.id ,name:product.name}))}>+</button> 
+                                                onClick={() => agregar( product.id ,product.name)}>+</button> 
                                         </Stack>
                                     </CardContent>
                                

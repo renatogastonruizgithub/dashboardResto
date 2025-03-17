@@ -1,7 +1,5 @@
 import React from 'react'
-import { useEffect,useRef  } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {fetchKitchen } from '../../store/orderSlice';
+import { useEffect  } from "react";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -10,28 +8,24 @@ import Typography from '@mui/material/Typography';
 import { ToastContainer} from "react-toastify"; 
 import Grid from '@mui/material/Grid';
 import ChooseState from 'pages/component-overview/ChooseState';
-
 import io from 'socket.io-client';
-
-const socket = io('http://localhost:3001'); // URL del backend NestJS
-
 import { useSocket } from 'context/SocketContext';
+import { Stack } from '@mui/material';
+import useOrderStore from 'store/orderStore';
 
 
 
 function OrderKitchen() {
     const socket = useSocket(); 
-     const dispatch = useDispatch()
 
-    useEffect(() => {
-     
-      dispatch(fetchKitchen());
 
+    useEffect(() => {     
+   fetchKitchen()
     
     }, [socket]);
 
-    const {kitchen, loading, error } = useSelector((state) => state.orders);
-    console.log(kitchen)
+    const {kitchen, fetchKitchen, error } = useOrderStore();
+
 
     return (
         <Container >
@@ -48,7 +42,7 @@ function OrderKitchen() {
                                     {row.site}
                                 </Typography>
                                 <Typography variant="h5" component="div">
-                                    {row.nroOrder}
+                                    #{row.nroOrder}
                                 </Typography>
 
                                 <ul>
@@ -61,11 +55,14 @@ function OrderKitchen() {
 
                             </CardContent>
                             <CardActions>
+                                <Stack direction="column" alignItems="center" justifyContent="center">
                                 <Typography variant="h5" component="div">
-                                    Enviar a mesa
+                                   Cambiar de estado
                                 </Typography>
-                                <ChooseState status={row.status} id={row.id}
-                                 chooseTo={["En proceso","Para retirar"]}></ChooseState>
+                                <ChooseState statusGet={row.status.name} id={row.id}
+                                 ></ChooseState>
+                                </Stack>
+                               
                             </CardActions>
                         </Card>
                     </Grid>

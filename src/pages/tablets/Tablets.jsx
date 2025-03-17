@@ -1,31 +1,27 @@
 import { Grid, Card, CardContent, Typography, Stack } from '@mui/material'
-import Link from '@mui/material/Link';
 import React from 'react'
 import { useEffect } from "react";
 import Button from '@mui/material/Button';
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTables, } from "../../store/tablesSlice";
-
 import { useNavigate } from "react-router-dom";
-
+import useTableStore from "../../store/tableStore";
 
 export default function Tablets() {
-  const dispatch = useDispatch();
+ 
   const navigate = useNavigate();
-
-
+ 
+  const { tables, fetchTables, loading, error } = useTableStore();
   useEffect(() => {
-    dispatch(fetchTables())
+    fetchTables()
    
-  }, [dispatch]);
+  }, []);
 
  
   const handleOrder = (id) => {  
     navigate(`/createOrder/${id}`);   
      }
 
-  const { tables, loading, error } = useSelector((state) => state.tables);
 
+ 
 
   return (
     <>

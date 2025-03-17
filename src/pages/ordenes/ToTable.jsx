@@ -1,43 +1,37 @@
 import React from 'react'
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchWaiter } from '../../store/orderSlice';
 import Card from '@mui/material/Card';
-
 import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-
 import Grid from '@mui/material/Grid';
-
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import ChooseState from 'pages/component-overview/ChooseState';
+import useOrderStore from 'store/orderStore';
+
 export default function ToTable() {
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(fetchWaiter());
+    fetchWaiter()
+  }, []);
 
-  }, [dispatch]);
-
-  const { waiter, loading, error } = useSelector((state) => state.orders);
- console.log(waiter)
- 
-  
+  const { waiter, fetchWaiter, error } = useOrderStore();
 
   const renderOrders = () => (
     <List>
       {waiter.map((row) => (
         <ListItem key={row.id} disablePadding>
           <ListItemButton>
-            {row.nroOrder} - 
-           
+            {row.nroOrder} -
+
             <strong> {row.table && row.table.name ? row.table.name : "Sin mesa"}</strong>
-             -
-             {row.name}
+            -
+            {row.name}
+
           </ListItemButton>
+          <ChooseState statusGet={row.status.name} id={row.id}></ChooseState>
         </ListItem>
       ))}
     </List>
@@ -45,8 +39,8 @@ export default function ToTable() {
 
   return (
     <div>
-       <Container>
-        <Grid container spacing={2}>        
+      <Container>
+        <Grid container spacing={2}>
 
           <Grid item xs={12} sm={6} md={6} lg={6}>
             <Card sx={{ minWidth: 200 }} elevation={3}>
@@ -55,6 +49,7 @@ export default function ToTable() {
                   Para llevar a mesa
                 </Typography>
                 {renderOrders()}
+
               </CardContent>
             </Card>
           </Grid>

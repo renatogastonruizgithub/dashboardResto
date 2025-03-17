@@ -1,8 +1,6 @@
 
 import React from 'react'
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchOrder } from '../../store/orderSlice';
 import Chip from '@mui/material/Chip';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,23 +8,17 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import { useNavigate } from "react-router-dom";
-import ChooseState from 'pages/component-overview/ChooseState';
-
-
+import useOrderStore from 'store/orderStore';
 
 export default function Orders() {
-  const order = 'asc';
-  const orderBy = 'Pedido';
-  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   useEffect(() => {
-    dispatch(fetchOrder());
-  }, [dispatch]);
+   fetchOrder()
+  }, []);
 
-  const { orders, loading, error } = useSelector((state) => state.orders);
+  const { orders, fetchOrder, error } = useOrderStore();
 
 
   const handleClick = (id) => {
@@ -75,7 +67,7 @@ export default function Orders() {
                   {row.dateOrder}
                 </TableCell >
                 <TableCell component="th" scope="row" >                 
-                  <ChooseState status={row.status}id={row.id} chooseTo={["Completada","Cancelada"]}/>
+                {row.status.name}
                 </TableCell>
 
                 <TableCell component="th" scope="row" >{row.name}</TableCell>

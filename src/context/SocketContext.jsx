@@ -1,22 +1,22 @@
 import { createContext, useContext, useEffect } from "react";
 import { io } from "socket.io-client";
-import { useDispatch } from "react-redux";
-import { fetchKitchen } from "store/orderSlice";
+
 import { toast } from "react-toastify";
+import useOrderStore from "store/orderStore";
 
 const socket = io("http://localhost:3001"); // Conexión única
 
 const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
-    const dispatch = useDispatch();
+    const {fetchKitchen} = useOrderStore();
 
     useEffect(() => {
         console.log("🔗 Conectado a WebSocket...");
  
         // 🔹 Escuchar múltiples eventos
         socket.on("ordersUpdated", (data) => {
-            dispatch(fetchKitchen());
+            fetchKitchen()
             toast.info(`Nuevo pedido!`, { position: "top-right" });
         });
 
@@ -33,7 +33,7 @@ export const SocketProvider = ({ children }) => {
           /*   socket.off("orderCompleted");
             socket.off("tableUpdated"); */
         };
-    }, [dispatch]);
+    }, []);
 
     return (
         <SocketContext.Provider value={socket}>
