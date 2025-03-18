@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 import { toast } from "react-toastify";
@@ -9,6 +9,7 @@ const socket = io("http://localhost:3001"); // Conexión única
 const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
+    const [ignoreNotifications, setIgnoreNotifications] = useState(false);
     const {fetchKitchen} = useOrderStore();
 
     useEffect(() => {
@@ -16,6 +17,7 @@ export const SocketProvider = ({ children }) => {
  
         // 🔹 Escuchar múltiples eventos
         socket.on("ordersUpdated", (data) => {
+            if (ignoreNotifications) return;
             fetchKitchen()
             toast.info(`Nuevo pedido!`, { position: "top-right" });
         });
@@ -33,10 +35,10 @@ export const SocketProvider = ({ children }) => {
           /*   socket.off("orderCompleted");
             socket.off("tableUpdated"); */
         };
-    }, []);
+    }, [ignoreNotifications]);
 
     return (
-        <SocketContext.Provider value={socket}>
+        <SocketContext.Provider value={{socket,setIgnoreNotifications }}>
             {children}
         </SocketContext.Provider>
     );

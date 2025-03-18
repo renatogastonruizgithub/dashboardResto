@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 import {  Typography, Stack, TextField, Container, Button } from '@mui/material'
 import Category from 'pages/component-overview/Category';
@@ -11,7 +11,9 @@ import TabPanel from '@mui/lab/TabPanel';
 import useOrderStore from "../../store/orderStore";
 import useProductStore from "../../store/productStore";
 import { ToastContainer } from 'react-toastify';
-
+import { toast } from "react-toastify";
+import { useSocket } from 'context/SocketContext';
+import ItemsCart from 'pages/component-overview/ItemsCart';
 
 function CreateOrder() {
   const { id } = useParams();
@@ -20,6 +22,8 @@ function CreateOrder() {
   const [carry, setCarry] = useState("En mesa")
   const [value, setValue] = React.useState('1');
   const [disable, setDisable] = useState(true)
+  const navigate = useNavigate();
+  const { setIgnoreNotifications } = useSocket();
 
   useEffect(() => {
     clearCart()
@@ -29,7 +33,11 @@ function CreateOrder() {
     if (!id) {
       setCarry("Para llevar");
     }
-  
+    setIgnoreNotifications(true);
+     return () => {
+      // Restaurar notificaciones cuando el componente se desmonte
+      setIgnoreNotifications(false);
+    };
 
   }, [id])
 
@@ -63,6 +71,14 @@ function CreateOrder() {
     sendOrder(orderData)
     clearCart()
     setName(" ")
+    toast.success("Orden creada con éxito", { 
+      position: "top-right", 
+      onClose: () => {
+        if (id && !loading) {
+          navigate(`/tablets`);
+        }
+      }
+    })
   }
 
   return (
@@ -100,7 +116,8 @@ function CreateOrder() {
 
             {items.length > 0 ? (
               <>
-                {items.map((item) => (
+              <ItemsCart ></ItemsCart>
+         {/*        {items.map((item) => (
                   <li key={item.productId}>
                     <Stack direction="row">
                       <p>{item.name}</p>
@@ -121,7 +138,7 @@ function CreateOrder() {
                       -
                     </button>
                   </li>
-                ))}
+                ))} */}
 
                 <Button
                   variant="contained"

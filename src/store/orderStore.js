@@ -127,7 +127,7 @@ const useOrderStore = create((set) => ({
         headers: { "Content-Type": "application/json" },
       });
       set({ items: response.data, loading: false });
-    toast.success("Orden creada con exito", { position: "top-right" })
+   
 
     } catch (error) {
       set({ error: error.message, loading: false });

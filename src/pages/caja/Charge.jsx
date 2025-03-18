@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import BtnCharge from 'pages/component-overview/BtnCharge';
 import useTableStore from "../../store/tableStore";
 import { ToastContainer } from 'react-toastify';
+import { useSocket } from 'context/SocketContext';
 const avatarSX = {
   width: 36,
   height: 36,
@@ -29,16 +30,20 @@ const actionSX = {
   transform: 'none'
 };
 export default function Charge() {
-
+  const { setIgnoreNotifications } = useSocket();
 
   useEffect(() => {   
      fetchCollections()
-   
+     setIgnoreNotifications(true);
+     return () => {
+      // Restaurar notificaciones cuando el componente se desmonte
+      setIgnoreNotifications(false);
+    };
   }, []);
 
   const {collections, fetchCollections, loading, tableOrder } = useTableStore();
 
-  return (
+  return ( 
     <div>
         <ToastContainer></ToastContainer>
       <List

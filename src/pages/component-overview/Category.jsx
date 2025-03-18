@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import Modal from '@mui/material/Modal';
 import useOrderStore from "../../store/orderStore";
 import useProductStore from '../../store/productStore';
+import ItemsCart from './ItemsCart';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -58,31 +59,7 @@ function BasicModal({ open, handleClose, categoryID }) {
                             >      
                                     <CardContent>
                                         <Typography variant="h5"> {product.name}</Typography>
-
-                                        <Stack
-                                            spacing={2}
-                                            direction="row"
-                                            alignItems="center"
-                                            justifyContent="center"
-                                            sx={{ marginTop: "1rem" }}
-                                        >
-                                           <button
-                                                style={{ cursor: "pointer" }}
-                                                onClick={() =>restar(product.id )}
-                                            >
-                                                -
-                                            </button>
-                                            <Typography variant="h3">
-                                            {
-                                                items.length > 0 ?
-                                                 (items.find((item) => item.productId === product.id)?.quantity || 0)
-                                                 :(0)
-                                            }                                       
-                                            </Typography>
-                                            <button
-                                                style={{ cursor: "pointer" }}
-                                                onClick={() => agregar( product.id ,product.name)}>+</button> 
-                                        </Stack>
+                                      <ItemsCart product={product}></ItemsCart>                                
                                     </CardContent>
                                
                             </Card>

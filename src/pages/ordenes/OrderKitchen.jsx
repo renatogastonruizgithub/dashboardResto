@@ -16,13 +16,13 @@ import useOrderStore from 'store/orderStore';
 
 
 function OrderKitchen() {
-    const socket = useSocket(); 
+   /*  const socket = useSocket();  */
 
 
     useEffect(() => {     
    fetchKitchen()
     
-    }, [socket]);
+    }, [/* socket */]);
 
     const {kitchen, fetchKitchen, error } = useOrderStore();
 
