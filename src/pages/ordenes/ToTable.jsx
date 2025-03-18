@@ -19,14 +19,16 @@ export default function ToTable() {
 
   const { waiter, fetchWaiter, error } = useOrderStore();
 
-  const renderOrders = () => (
+  const ordersTakeOut  = waiter.filter(order => order.site === "Para llevar"&& order.status.name==="completada para llevar" );
+  const ordersInTable = waiter.filter(order => order.site === "En mesa" && order.status.name==="llevar a mesa" )
+  const renderOrders = (orders) => (
     <List>
-      {waiter.map((row) => (
+      {orders.map((row) => (
         <ListItem key={row.id} disablePadding>
           <ListItemButton>
-            {row.nroOrder} -
+           #{row.nroOrder} 
 
-            <strong> {row.table && row.table.name ? row.table.name : "Sin mesa"}</strong>
+            <strong> {row.table && row.table.name ? row.table.name : " "}</strong>
             -
             {row.name}
 
@@ -48,10 +50,23 @@ export default function ToTable() {
                 <Typography variant="h1" component="div">
                   Para llevar a mesa
                 </Typography>
-                {renderOrders()}
+                {renderOrders(ordersInTable)}
 
               </CardContent>
             </Card>
+            
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={6}>
+            <Card sx={{ minWidth: 200 }} elevation={3}>
+              <CardContent>
+                <Typography variant="h1" component="div">
+                  entrega para llevar
+                </Typography>
+                {renderOrders(ordersTakeOut)}
+
+              </CardContent>
+            </Card>
+            
           </Grid>
         </Grid>
       </Container >

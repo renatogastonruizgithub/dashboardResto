@@ -22,7 +22,7 @@ export default function Customers() {
   const ordersInProcess = customer.filter(order => order.status.name === "en proceso"|| order.status.name==="en proceso para llevar");
   const ordersInTable = customer.filter(order => order.site === "En mesa" && order.status.name==="llevar a mesa" )
 
-  const ordersTakeOut  = customer.filter(order => order.site === "Para llevar"&& order.status.name==="para retirar" );
+  const ordersTakeOut  = customer.filter(order => order.site === "Para llevar"&& order.status.name==="completada para llevar" );
 
 
   const renderOrders = (orders) => (
